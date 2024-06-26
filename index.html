@@ -98,6 +98,17 @@
             display: flex;
             flex-direction: column;
         }
+        .encryption-message {
+            background-color: #1E1E1E;
+            color: #B3B3B3;
+            border-radius: 10px;
+            padding: 6px 10px;
+            margin-bottom: 10px;
+            font-size: 0.7em;
+            display: flex;
+            align-items: center;
+            text-align: center;
+        }
         .message {
             margin: 10px 0;
             max-width: 70%;
@@ -144,7 +155,9 @@
         </div>
     </div>
     <div class="chat-container">
-        <!-- Isi chat akan ditambahkan secara dinamis oleh JavaScript -->
+        <div class="encryption-message">
+            <span>Pesan ini bersifat pribadi jika ingin melihat isi pesan ini Minta data.txt ke pembuat</span>
+        </div>
     </div>
     <div class="footer">
         <i class="far fa-smile icon"></i>
@@ -197,6 +210,12 @@
         function addMessagesToChat(messages) {
             const chatContainer = document.querySelector('.chat-container');
             chatContainer.innerHTML = ''; // Clear existing messages
+
+            // Tambahkan pesan enkripsi kembali
+            const encryptionMessage = document.createElement('div');
+            encryptionMessage.classList.add('encryption-message');
+            encryptionMessage.innerHTML = '<span>Pesan ini bersifat pribadi jika ingin melihat isi pesan ini Minta data.txt ke pembuat</span>';
+            chatContainer.appendChild(encryptionMessage);
 
             messages.forEach(message => {
                 const messageElement = document.createElement('div');
