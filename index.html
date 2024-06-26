@@ -143,6 +143,9 @@
             <i class="fas fa-ellipsis-v header-icon"></i>
         </div>
     </div>
+     <div class="chat-container"> 
+   <div class="encryption-message"> <span>🔒 Pesan dan panggilan dienkripsi secara end-to-end. Tidak seorang pun di luar chat ini, termasuk WhatsApp, yang dapat membaca atau mendengarkannya. Ketuk untuk info selengkapnya.</span> 
+   </div> 
     <div class="chat-container">
         <!-- Isi chat akan ditambahkan secara dinamis oleh JavaScript -->
     </div>
@@ -165,7 +168,7 @@
                 const chatData = parseChatFile(contents); // Panggil fungsi untuk memproses isi file
 
                 if (chatData.length > 0) {
-                    addMessagesToChat(chatData); // Panggil fungsi untuk menambahkan pesan ke dalam chat
+                    processMessagesInChunks(chatData); // Proses pesan dalam potongan kecil
                 } else {
                     console.error('Tidak ada data chat yang ditemukan dalam file.');
                 }
@@ -210,6 +213,24 @@
                 `;
                 chatContainer.appendChild(messageElement);
             });
+        }
+
+        // Fungsi untuk memproses pesan dalam potongan kecil
+        function processMessagesInChunks(messages) {
+            const chunkSize = 100; // Jumlah pesan yang diproses per potongan
+            let index = 0;
+
+            function processChunk() {
+                const chunk = messages.slice(index, index + chunkSize);
+                addMessagesToChat(chunk);
+                index += chunkSize;
+
+                if (index < messages.length) {
+                    setTimeout(processChunk, 50); // Jadwalkan pemrosesan potongan berikutnya
+                }
+            }
+
+            processChunk();
         }
 
         // Tangani peristiwa unggah file
