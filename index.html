@@ -153,6 +153,8 @@
         <button><i class="fas fa-microphone"></i></button>
     </div>
     <script>
+        const yourName = "DzarelDeveloper"; // Ganti ini dengan nama Anda di chat
+
         // Fungsi untuk memproses file .txt yang diunggah
         function handleFileUpload(event) {
             const file = event.target.files[0];
@@ -198,7 +200,7 @@
             messages.forEach(message => {
                 const messageElement = document.createElement('div');
                 messageElement.classList.add('message');
-                if (message.sender.trim() === 'You') {
+                if (message.sender.trim() === yourName) {
                     messageElement.classList.add('sent');
                 } else {
                     messageElement.classList.add('received');
