@@ -196,6 +196,7 @@
         // Fungsi untuk menambahkan pesan-pesan ke dalam HTML
         function addMessagesToChat(messages) {
             const chatContainer = document.querySelector('.chat-container');
+            chatContainer.innerHTML = ''; // Clear existing messages
 
             messages.forEach(message => {
                 const messageElement = document.createElement('div');
@@ -210,6 +211,9 @@
                 `;
                 chatContainer.appendChild(messageElement);
             });
+
+            // Scroll to bottom
+            chatContainer.scrollTop = chatContainer.scrollHeight;
         }
 
         // Fungsi untuk memproses pesan dalam potongan kecil
