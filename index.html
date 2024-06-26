@@ -178,12 +178,12 @@
             const chatData = [];
 
             lines.forEach(line => {
-                // Format contoh: 22:20, Mandaaaaa, Assalamualaikum
-                const parts = line.split(', ');
-                if (parts.length === 3) {
-                    const time = parts[0];
-                    const sender = parts[1];
-                    const content = parts[2];
+                // Format contoh: [2/3 10.40] DzarelDeveloper: Eh
+                const parts = line.match(/^\[(.*?)\] (.*?): (.*)$/);
+                if (parts) {
+                    const time = parts[1];
+                    const sender = parts[2];
+                    const content = parts[3];
                     chatData.push({ time, sender, content });
                 }
             });
