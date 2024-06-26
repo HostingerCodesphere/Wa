@@ -155,9 +155,7 @@
         </div>
     </div>
     <div class="chat-container">
-        <div class="encryption-message">
-            <span>Pesan ini bersifat pribadi jika ingin melihat isi pesan ini Minta data.txt ke pembuat</span>
-        </div>
+        <!-- Placeholder for messages -->
     </div>
     <div class="footer">
         <i class="far fa-smile icon"></i>
@@ -178,7 +176,7 @@
                 const chatData = parseChatFile(contents); // Panggil fungsi untuk memproses isi file
 
                 if (chatData.length > 0) {
-                    processMessagesInChunks(chatData); // Proses pesan dalam potongan kecil
+                    addMessagesToChat(chatData); // Tambahkan semua pesan dari data.txt
                 } else {
                     console.error('Tidak ada data chat yang ditemukan dalam file.');
                 }
@@ -203,54 +201,39 @@
                 }
             });
 
+            // Urutkan chatData berdasarkan waktu, jika perlu
+            chatData.sort((a, b) => {
+                return new Date(a.time) - new Date(b.time);
+            });
+
             return chatData;
         }
 
         // Fungsi untuk menambahkan pesan-pesan ke dalam HTML
         function addMessagesToChat(messages) {
             const chatContainer = document.querySelector('.chat-container');
-            chatContainer.innerHTML = ''; // Clear existing messages
-
-            // Tambahkan pesan enkripsi kembali
-            const encryptionMessage = document.createElement('div');
-            encryptionMessage.classList.add('encryption-message');
-            encryptionMessage.innerHTML = '<span>Pesan ini bersifat pribadi jika ingin melihat isi pesan ini Minta data.txt ke pembuat</span>';
-            chatContainer.appendChild(encryptionMessage);
 
             messages.forEach(message => {
                 const messageElement = document.createElement('div');
                 messageElement.classList.add('message');
+                
+                // Tentukan kelas 'sent' atau 'received' berdasarkan sender
                 if (message.sender.trim() === yourName) {
                     messageElement.classList.add('sent');
                 } else {
                     messageElement.classList.add('received');
                 }
+
                 messageElement.innerHTML = `
                     ${message.content} <span class="time">${message.time}</span>
                 `;
-                chatContainer.appendChild(messageElement);
+                
+                // Sisipkan pesan di bagian atas chat container
+                chatContainer.insertBefore(messageElement, chatContainer.firstChild);
             });
 
-            // Scroll to bottom
+            // Scroll ke bagian bawah
             chatContainer.scrollTop = chatContainer.scrollHeight;
-        }
-
-        // Fungsi untuk memproses pesan dalam potongan kecil
-        function processMessagesInChunks(messages) {
-            const chunkSize = 100; // Jumlah pesan yang diproses per potongan
-            let index = 0;
-
-            function processChunk() {
-                const chunk = messages.slice(index, index + chunkSize);
-                addMessagesToChat(chunk);
-                index += chunkSize;
-
-                if (index < messages.length) {
-                    setTimeout(processChunk, 50); // Jadwalkan pemrosesan potongan berikutnya
-                }
-            }
-
-            processChunk();
         }
 
         // Tangani peristiwa unggah file
